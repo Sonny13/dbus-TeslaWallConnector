@@ -21,7 +21,7 @@ from vedbus import VeDbusService
 
 
 class DbusGoeChargerService:
-  def __init__(self, servicename, paths, productname='go-eCharger', connection='go-eCharger HTTP JSON service'):
+  def __init__(self, servicename, paths, productname='Tesla WallConnector', connection='Tesla WallConnector HTTP JSON service'):
     config = self._getConfig()
     deviceinstance = int(config['DEFAULT']['Deviceinstance'])
     hardwareVersion = int(config['DEFAULT']['HardwareVersion'])
@@ -36,7 +36,7 @@ class DbusGoeChargerService:
       '/Mode'
     ]
     
-    #get data from go-eCharger
+    #get data from Tesla WallConnector
     data = self._getGoeChargerData()
 
     # Create the management objects, as specified in the ccgx dbus-api document
@@ -121,7 +121,7 @@ class DbusGoeChargerService:
     
     # check for response
     if not request_data:
-      raise ConnectionError("No response from go-eCharger - %s" % (URL))
+      raise ConnectionError("No response from Tesla WallConnector - %s" % (URL))
     
     json_data = request_data.json()
     
@@ -132,7 +132,7 @@ class DbusGoeChargerService:
     if json_data[parameter] == str(value):
       return True
     else:
-      logging.warning("go-eCharger parameter %s not set to %s" % (parameter, str(value)))
+      logging.warning("Tesla WallConnector parameter %s not set to %s" % (parameter, str(value)))
       return False
     
  
@@ -145,7 +145,7 @@ class DbusGoeChargerService:
     
     # check for response
     if not request_data:
-        raise ConnectionError("No response from go-eCharger - %s" % (URL))
+        raise ConnectionError("No response from Tesla WallConnector - %s" % (URL))
     
     json_data = request_data.json()     
     
@@ -166,7 +166,7 @@ class DbusGoeChargerService:
  
   def _update(self):   
     try:
-       #get data from go-eCharger
+       #get data from Tesla WallConnector
        data = self._getGoeChargerData()
        
        if data is not None:
