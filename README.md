@@ -1,11 +1,14 @@
-# dbus-goecharger
-Integrate go-eCharger into Victron Energies Venus OS
+# dbus-TeslaWallConnector
+Integrate Tesla Wall Connector into Victron Energies Venus OS
+
+# DOES NOT WORK CURRENTLY !!!!!
 
 ## Purpose
 With the scripts in this repo it should be easy possible to install, uninstall, restart a service that connects the go-eCharger to the VenusOS and GX devices from Victron.
 Idea is inspired on @fabian-lauer and @trixing project linked below, many thanks for sharing the knowledge:
 - https://github.com/fabian-lauer/dbus-shelly-3em-smartmeter
 - https://github.com/trixing/venus.dbus-twc3
+- https://github.com/vikt0rm/dbus-goecharger
 
 ## How it works
 ### My setup (only relevant for this script)
@@ -35,12 +38,7 @@ Control of go-eCharger by the victron system in "Mode" "Auto" is not supported f
 
 
 ### Pictures
-![Remote Console - Overview](img/venus-os-remote-console-overview.PNG) 
-![go-eCharger - Values](img/venus-os-goecharger.PNG)
-![go-eCharger - Values](img/venus-os-goecharger2.PNG)
-![SmartMeter - Device Details](img/venus-os-goecharger-devicedetails.PNG)
 ![Victron Portal - Dashboard](img/venus-os-dashboard.PNG)
-![Victron Portal - Advanced](img/venus-os-advanced-configuration.png)
 
 ## Install & Configuration
 ### Get the code
