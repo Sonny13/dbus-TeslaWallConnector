@@ -24,12 +24,13 @@ class DbusGoeChargerService:
   def __init__(self, servicename, paths, productname='Tesla WallConnector', connection='Tesla WallConnector HTTP JSON service'):
     config = self._getConfig()
     deviceinstance = int(config['DEFAULT']['Deviceinstance'])
-    hardwareVersion = int(config['DEFAULT']['HardwareVersion'])
 
     self._dbusservice = VeDbusService("{}.http_{:02d}".format(servicename, deviceinstance))
     self._paths = paths
 
-    ip = 'TeslaWallConnector.local'
+
+    ip = (config['DEFAULT']['Host'])
+    #ip = 'TeslaWallConnector.local'
     url = 'http://' + ip + '/api/1'
     self.VITALS = url + '/vitals'
     self.LIFETIME = url + '/lifetime'
@@ -58,7 +59,7 @@ class DbusGoeChargerService:
     if version_data:
        self._dbusservice.add_path('/FirmwareVersion', int(version_data['firmware_version']))#.replace('.', ',')))
        self._dbusservice.add_path('/Serial', version_data['serial_number'])
-    self._dbusservice.add_path('/HardwareVersion', hardwareVersion)
+       self._dbusservice.add_path('/HardwareVersion', version_data['part_number'])
     self._dbusservice.add_path('/Connected', 1)
     self._dbusservice.add_path('/UpdateIndex', 0)
 
@@ -129,27 +130,12 @@ class DbusGoeChargerService:
     return int(value)
 
 
-  def _getGoeChargerStatusUrl(self):
-    config = self._getConfig()
-    accessType = config['DEFAULT']['AccessType']
-
-    if accessType == 'OnPremise':
-        URL = "http://%s/api/1/vitals" % (config['ONPREMISE']['Host'])
-    else:
-        raise ValueError("AccessType %s is not supported" % (config['DEFAULT']['AccessType']))
-
-    return URL
-
 
 
   def _getGoeChargerMqttPayloadUrl(self, parameter, value):
     config = self._getConfig()
-    accessType = config['DEFAULT']['AccessType']
 
-    if accessType == 'OnPremise':
-        URL = "http://%s/mqtt?payload=%s=%s" % (config['ONPREMISE']['Host'], parameter, value)
-    else:
-        raise ValueError("AccessType %s is not supported" % (config['DEFAULT']['AccessType']))
+    URL = "http://%s/mqtt?payload=%s=%s" % (config['ONPREMISE']['Host'], parameter, value)
 
     return URL
 
@@ -175,8 +161,6 @@ class DbusGoeChargerService:
 
 
   def _getTWCVitalsData(self):
-  #def _getGoeChargerData(self):
-    #URL = self._getGoeChargerStatusUrl()
     try:
        request_data = requests.get(url = self.VITALS, timeout=5)
     except Exception:
@@ -196,8 +180,6 @@ class DbusGoeChargerService:
     return json_data
 
   def _getTWCVersionData(self):
-  #def _getGoeChargerData(self):
-    #URL = self._getGoeChargerStatusUrl()
     try:
        request_data = requests.get(url = self.VERSION, timeout=5)
     except Exception:
@@ -217,8 +199,6 @@ class DbusGoeChargerService:
     return json_data
 
   def _getTWCLifetimeData(self):
-  #def _getGoeChargerData(self):
-    #URL = self._getGoeChargerStatusUrl()
     try:
        request_data = requests.get(url = self.LIFETIME, timeout=5)
     except Exception:
