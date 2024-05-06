@@ -70,11 +70,13 @@ Within the project there is a file `/data/dbus-goecharger/config.ini` - just cha
 nano /data/dbus-goecharger/config.ini
 ```
 
-start the service
+### Start the Service
 
 ```
 /data/dbus-goecharger/install.sh
 ```
+
+### Debugging
 ⚠️ Check configuration after that - because service is already installed an running and with wrong connection data (host) you will spam the log-file
 
 you can restart the service after a config change with
