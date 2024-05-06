@@ -26,7 +26,7 @@ What is the script doing:
   - http://ip_of_connector/api/1/lifetime
   - http://ip_of_connector/api/1/version
  
-  - currently not used
+  currently not used
   - http://ip_of_connector/api/1/wifi_status
 - Serial/MAC is taken from the response as device serial
 - Paths are added to the DBus with default value 0 - including some settings like name, etc
