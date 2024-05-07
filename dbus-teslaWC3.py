@@ -58,7 +58,7 @@ class DbusTeslaWallConnectorService:
     self._dbusservice.add_path('/ProductName', productname)
     self._dbusservice.add_path('/CustomName', productname)
     if version_data:
-       self._dbusservice.add_path('/FirmwareVersion', int(version_data['firmware_version']))#.replace('.', ',')))
+       self._dbusservice.add_path('/FirmwareVersion', version_data['firmware_version'])#.replace('.', ',')))
        self._dbusservice.add_path('/Serial', version_data['serial_number'])
        self._dbusservice.add_path('/HardwareVersion', version_data['part_number'])
     self._dbusservice.add_path('/Connected', 1)
@@ -75,7 +75,7 @@ class DbusTeslaWallConnectorService:
    #changer     path, settings['initial'], gettextcallback=settings['textformat'], writeable=True, onchangecallback=self._handlechangedvalue)
 
     # add temp handler
-    self._tempservice = self.add_temp_service(100)
+    #self._tempservice = self.add_temp_service(100)
 
 
     # last update
@@ -236,7 +236,7 @@ class DbusTeslaWallConnectorService:
           self._dbusservice['/Ac/L1/Power'] = round(float(d['currentA_a']) * float(d['voltageA_v']))
           self._dbusservice['/Ac/L2/Power'] = round(float(d['currentB_a']) * float(d['voltageB_v']))
           self._dbusservice['/Ac/L3/Power'] = round(float(d['currentC_a']) * float(d['voltageC_v']))
-          self._dbusservice['/Ac/Power'] = round(ds['/Ac/L1/Power'] + ds['/Ac/L2/Power'] + ds['/Ac/L3/Power'])
+          self._dbusservice['/Ac/Power'] = round(self._dbusservice['/Ac/L1/Power'] + self._dbusservice['/Ac/L2/Power'] + self._dbusservice['/Ac/L3/Power'])
           self._dbusservice['/Ac/Frequency'] = round(d['grid_hz'], 1)
           self._dbusservice['/Ac/Voltage'] = round(d['grid_v'])
           self._dbusservice['/Current'] = round(d['vehicle_current_a'], 1)
@@ -258,8 +258,8 @@ class DbusTeslaWallConnectorService:
           self._dbusservice['/PCB/Temperature'] = d['pcba_temp_c']
           self._dbusservice['/Handle/Temperature'] = d['handle_temp_c']
 
-          self._tempservice['/CustomName'] = self._name + ' Handle'
-          self._tempservice['/Temperature'] = round(d['handle_temp_c'], 1)
+          #self._tempservice['/CustomName'] = self._name + ' Handle'
+          #self._tempservice['/Temperature'] = round(d['handle_temp_c'], 1)
 
 
           #logging
