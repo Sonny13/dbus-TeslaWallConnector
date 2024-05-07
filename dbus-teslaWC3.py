@@ -2,6 +2,7 @@
 
 # import normal packages
 import platform
+import json
 import logging
 import sys
 import os
@@ -20,7 +21,7 @@ sys.path.insert(1, os.path.join(os.path.dirname(__file__), '/opt/victronenergy/d
 from vedbus import VeDbusService
 
 
-class DbusGoeChargerService:
+class DbusTeslaWallConnectorService:
   def __init__(self, servicename, paths, productname='Tesla WallConnector', connection='Tesla WallConnector HTTP JSON service'):
     config = self._getConfig()
     deviceinstance = int(config['DEFAULT']['Deviceinstance'])
@@ -30,7 +31,7 @@ class DbusGoeChargerService:
 
 
     ip = (config['DEFAULT']['Host'])
-    #ip = 'TeslaWallConnector.local'
+    ip = ip or 'TeslaWallConnector.local'
     url = 'http://' + ip + '/api/1'
     self.VITALS = url + '/vitals'
     self.LIFETIME = url + '/lifetime'
@@ -69,12 +70,12 @@ class DbusGoeChargerService:
       self._dbusservice.add_path(path, None)
 
     # add path values to dbus
-    for path, settings in self._paths.items():
-      self._dbusservice.add_path(
-        path, settings['initial'], gettextcallback=settings['textformat'], writeable=True, onchangecallback=self._handlechangedvalue)
+   #changer for path, settings in self._paths.items():
+   #changer   self._dbusservice.add_path(
+   #changer     path, settings['initial'], gettextcallback=settings['textformat'], writeable=True, onchangecallback=self._handlechangedvalue)
 
     # add temp handler
-    self._tempservice = self.add_temp_service(deviceinstance, dryrun)
+    self._tempservice = self.add_temp_service(100)
 
 
     # last update
@@ -91,9 +92,8 @@ class DbusGoeChargerService:
 
 
 
-  def add_temp_service(self, instance, dryrun):
-    ds = VeDbusService('com.victronenergy.temperature.twc3' + ('_dryrun' if dryrun else ''),
-                       bus=dbusconnection())
+  def add_temp_service(self, instance):
+    ds = VeDbusService('com.victronenergy.temperature.twc3',bus=dbusconnection())
 
     # Create the management objects, as specified in the ccgx dbus-api document
     ds.add_path('/Mgmt/ProcessName', __file__)
@@ -101,7 +101,7 @@ class DbusGoeChargerService:
     ds.add_path('/Mgmt/Connection', 'local')
 
     # Create the mandatory objects
-    ds.add_path('/DeviceInstance', instance + (100 if dryrun else 0))
+    ds.add_path('/DeviceInstance', instance)
     ds.add_path('/ProductId', 0)
     ds.add_path('/ProductName', 'dbus-twc3')
     ds.add_path('/FirmwareVersion', 0)
@@ -233,9 +233,6 @@ class DbusGoeChargerService:
 
        if d is not None:
           #send data to DBus
-          #self._dbusservice['/StartStop'] = int(data['alw'])
-
-
           self._dbusservice['/Ac/L1/Power'] = round(float(d['currentA_a']) * float(d['voltageA_v']))
           self._dbusservice['/Ac/L2/Power'] = round(float(d['currentB_a']) * float(d['voltageB_v']))
           self._dbusservice['/Ac/L3/Power'] = round(float(d['currentC_a']) * float(d['voltageC_v']))
@@ -262,7 +259,7 @@ class DbusGoeChargerService:
           self._dbusservice['/Handle/Temperature'] = d['handle_temp_c']
 
           self._tempservice['/CustomName'] = self._name + ' Handle'
-          self._tempservice['/Temperature'] = round(data['handle_temp_c'], 1)
+          self._tempservice['/Temperature'] = round(d['handle_temp_c'], 1)
 
 
           #logging
@@ -287,18 +284,18 @@ class DbusGoeChargerService:
     # return true, otherwise add_timeout will be removed from GObject - see docs http://library.isr.ist.utl.pt/docs/pygtk2reference/gobject-functions.html#function-gobject--timeout-add
     return True
 
-  def _handlechangedvalue(self, path, value):
-    logging.info("someone else updated %s to %s" % (path, value))
-
-    if path == '/SetCurrent':
-      return self._setGoeChargerValue('amp', value)
-    elif path == '/StartStop':
-      return self._setGoeChargerValue('alw', value)
-    elif path == '/MaxCurrent':
-      return self._setGoeChargerValue('ama', value)
-    else:
-      logging.info("mapping for evcharger path %s does not exist" % (path))
-      return False
+  #changer def _handlechangedvalue(self, path, value):
+  #changer   logging.info("someone else updated %s to %s" % (path, value))
+#changer
+  #changer   if path == '/SetCurrent':
+  #changer     return self._setGoeChargerValue('amp', value)
+  #changer   elif path == '/StartStop':
+  #changer     return self._setGoeChargerValue('alw', value)
+  #changer   elif path == '/MaxCurrent':
+  #changer     return self._setGoeChargerValue('ama', value)
+  #changer   else:
+  #changer     logging.info("mapping for evcharger path %s does not exist" % (path))
+  #changer     return False
 
 
 def main():
@@ -327,7 +324,7 @@ def main():
       _s = lambda p, v: (str(v) + 's')
 
       #start our main-service
-      pvac_output = DbusGoeChargerService(
+      pvac_output = DbusTeslaWallConnectorService(
         servicename='com.victronenergy.evcharger',
         paths={
           '/Ac/Power': {'initial': 0, 'textformat': _w},
