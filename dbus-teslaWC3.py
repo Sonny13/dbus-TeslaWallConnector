@@ -63,7 +63,7 @@ class DbusTeslaWallConnectorService:
        self._dbusservice.add_path('/HardwareVersion', version_data['part_number'])
     self._dbusservice.add_path('/Connected', 1)
     self._dbusservice.add_path('/UpdateIndex', 0)
-
+    self._dbusservice.add_path('/Position', 0)
 
     # add paths without units
     for path in paths_wo_unit:
