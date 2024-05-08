@@ -49,7 +49,7 @@ Control of Tesla Wall Connector by the victron system in "Mode" "Auto" is not su
 Log into your GX device via ssh and run the following scripts:
 ```
 wget https://github.com/Sonny13/dbus-TeslaWallConnector/archive/refs/heads/main.zip
-unzip main.zip "dbus-teslawallconnector-main/*" -d /data
+unzip main.zip "dbus-TeslaWallConnector-main/*" -d /data
 mv /data/dbus-TeslaWallConnector-main /data/dbus-teslawallconnector
 chmod a+x /data/dbus-teslawallconnector/install.sh
 rm main.zip
