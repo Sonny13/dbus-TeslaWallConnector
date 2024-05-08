@@ -30,7 +30,7 @@ What is the script doing:
   - http://ip_of_connector/api/1/wifi_status
 - Serial/MAC is taken from the response as device serial
 - Paths are added to the DBus with default value 0 - including some settings like name, etc
-- After that a "loop" is started which pulls go-teslawallconnector data every 2.5s from the REST-API and updates the values in the DBus
+- After that a "loop" is started which pulls Tesla Wall Connector data every 2.5s from the REST-API and updates the values in the DBus
 
 
 
