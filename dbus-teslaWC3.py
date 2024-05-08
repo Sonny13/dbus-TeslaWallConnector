@@ -298,13 +298,13 @@ class DbusTeslaWallConnectorService:
    
     return level
     
-def main(self):
+def main():
   #configure logging
-  config = self._getConfig()
-  loglevel = int(config['DEFAULT']['LogLevel'])
+  #config = self._getConfig()
+  #loglevel = int(config['DEFAULT']['LogLevel'])
   logging.basicConfig(      format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
                             datefmt='%Y-%m-%d %H:%M:%S',
-                            level=logging.getLogLevel(),
+                            level=logging.INFO,#logging.getLogLevel(),
                             handlers=[
                                 logging.FileHandler("%s/current.log" % (os.path.dirname(os.path.realpath(__file__)))),
                                 logging.StreamHandler()
