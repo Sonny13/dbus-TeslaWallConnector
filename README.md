@@ -1,7 +1,8 @@
 # dbus-TeslaWallConnector
 Integrate Tesla Wall Connector into Victron Energies Venus OS
 
-# DOES NOT WORK CURRENTLY !!!!!
+# BETA Status
+There still might be some issues
 
 ## Purpose
 This repo enable visualizing data of one Tesla Wall Connector VenusOS and GX devices from Victron.
@@ -49,7 +50,7 @@ Control of Tesla Wall Connector by the victron system in "Mode" "Auto" is not su
 Log into your GX device via ssh and run the following scripts:
 ```
 wget https://github.com/Sonny13/dbus-TeslaWallConnector/archive/refs/heads/main.zip
-unzip main.zip "dbus-teslawallconnector-main/*" -d /data
+unzip main.zip "dbus-TeslaWallConnector-main/*" -d /data
 mv /data/dbus-TeslaWallConnector-main /data/dbus-teslawallconnector
 chmod a+x /data/dbus-teslawallconnector/install.sh
 rm main.zip
@@ -67,7 +68,7 @@ Within the project there is a file `/data/dbus-teslawallconnector/config.ini` - 
 
 
 ```
-nano /data/dbus-```/config.ini
+nano /data/dbus-teslawallconnector/config.ini
 ```
 
 ### Start the Service
@@ -81,7 +82,8 @@ nano /data/dbus-```/config.ini
 
 ### Check if the script is running
 
-```svstat /service/dbus-teslawallconnector``` show if the service (our script) is running. If the number of seconds shown is low, it is probably restarting and you should look into ```cat /data/dbus-teslawallconnector/current.log```.
+```svstat /service/dbus-teslawallconnector``` 
+show if the service (our script) is running. If the number of seconds shown is low, it is probably restarting and you should look into ```cat /data/dbus-teslawallconnector/current.log```.
 
 
 
