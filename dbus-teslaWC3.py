@@ -25,6 +25,7 @@ class DbusTeslaWallConnectorService:
   def __init__(self, servicename, paths, productname='Tesla WallConnector', connection='Tesla WallConnector HTTP JSON service'):
     config = self._getConfig()
     deviceinstance = int(config['DEFAULT']['Deviceinstance'])
+    position = int(config['DEFAULT']['Position'])
 
     self._dbusservice = VeDbusService("{}.http_{:02d}".format(servicename, deviceinstance))
     self._paths = paths
@@ -63,7 +64,7 @@ class DbusTeslaWallConnectorService:
        self._dbusservice.add_path('/HardwareVersion', version_data['part_number'])
     self._dbusservice.add_path('/Connected', 1)
     self._dbusservice.add_path('/UpdateIndex', 0)
-    self._dbusservice.add_path('/Position', 1)
+    self._dbusservice.add_path('/Position', position)
 
     # add paths without units
     for path in paths_wo_unit:
@@ -89,7 +90,7 @@ class DbusTeslaWallConnectorService:
 
 
     # add _signOfLife 'timer' to get feedback in log every 5minutes
-    gobject.timeout_add(self._getSignOfLifeInterval()*60*1000, self._signOfLife)
+    gobject.timeout_add(5*60*1000, self._signOfLife)
 
 
 
@@ -119,17 +120,6 @@ class DbusTeslaWallConnectorService:
     config = configparser.ConfigParser()
     config.read("%s/config.ini" % (os.path.dirname(os.path.realpath(__file__))))
     return config
-
-
-  def _getSignOfLifeInterval(self):
-    config = self._getConfig()
-    value = config['DEFAULT']['SignOfLifeLog']
-
-    if not value:
-        value = 0
-
-    return int(value)
-
 
 
 
@@ -297,13 +287,25 @@ class DbusTeslaWallConnectorService:
      else:
        logging.info("mapping for evcharger path %s does not exist" % (path))
        return False
-
-
+         
+   def getLogLevel():
+     config = self._getConfig()
+     logLevelString = config['DEFAULT']['LogLevel']
+  
+     if logLevelString:
+       level = logging.getLevelName(logLevelString)
+    else:
+       level = logging.INFO
+    
+     return level
+    
 def main():
   #configure logging
+  config = self._getConfig()
+  loglevel = int(config['DEFAULT']['LogLevel'])
   logging.basicConfig(      format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
                             datefmt='%Y-%m-%d %H:%M:%S',
-                            level=logging.INFO,
+                            level=logging.getLogLevel(),
                             handlers=[
                                 logging.FileHandler("%s/current.log" % (os.path.dirname(os.path.realpath(__file__)))),
                                 logging.StreamHandler()
