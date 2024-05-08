@@ -63,16 +63,16 @@ class DbusTeslaWallConnectorService:
        self._dbusservice.add_path('/HardwareVersion', version_data['part_number'])
     self._dbusservice.add_path('/Connected', 1)
     self._dbusservice.add_path('/UpdateIndex', 0)
-    self._dbusservice.add_path('/Position', 0)
+    self._dbusservice.add_path('/Position', 1)
 
     # add paths without units
     for path in paths_wo_unit:
       self._dbusservice.add_path(path, None)
 
     # add path values to dbus
-   #changer for path, settings in self._paths.items():
-   #changer   self._dbusservice.add_path(
-   #changer     path, settings['initial'], gettextcallback=settings['textformat'], writeable=True, onchangecallback=self._handlechangedvalue)
+    for path, settings in self._paths.items():
+      self._dbusservice.add_path(
+        path, settings['initial'], gettextcallback=settings['textformat'], writeable=True, onchangecallback=self._handlechangedvalue)
 
     # add temp handler
     #self._tempservice = self.add_temp_service(100)
@@ -240,8 +240,8 @@ class DbusTeslaWallConnectorService:
           self._dbusservice['/Ac/Frequency'] = round(d['grid_hz'], 1)
           self._dbusservice['/Ac/Voltage'] = round(d['grid_v'])
           self._dbusservice['/Current'] = round(d['vehicle_current_a'], 1)
-          self._dbusservice['/SetCurrent'] = 16  # static for now
-          self._dbusservice['/MaxCurrent'] = 16  # d['vehicle_current_a']
+          self._dbusservice['/SetCurrent'] = 13  # static for now
+          self._dbusservice['/MaxCurrent'] = 13  # d['vehicle_current_a']
           # self._dbusservice['/Ac/Energy/Forward'] = float(d['session_energy_wh']) / 1000.0
           self._dbusservice['/Ac/Energy/Forward'] = round(float(lt['energy_wh']) / 1000.0, 3)
           self._dbusservice['/ChargingTime'] = d['session_s']
@@ -284,18 +284,18 @@ class DbusTeslaWallConnectorService:
     # return true, otherwise add_timeout will be removed from GObject - see docs http://library.isr.ist.utl.pt/docs/pygtk2reference/gobject-functions.html#function-gobject--timeout-add
     return True
 
-  #changer def _handlechangedvalue(self, path, value):
-  #changer   logging.info("someone else updated %s to %s" % (path, value))
-#changer
-  #changer   if path == '/SetCurrent':
-  #changer     return self._setGoeChargerValue('amp', value)
-  #changer   elif path == '/StartStop':
-  #changer     return self._setGoeChargerValue('alw', value)
-  #changer   elif path == '/MaxCurrent':
-  #changer     return self._setGoeChargerValue('ama', value)
-  #changer   else:
-  #changer     logging.info("mapping for evcharger path %s does not exist" % (path))
-  #changer     return False
+   def _handlechangedvalue(self, path, value):
+     logging.info("someone else updated %s to %s" % (path, value))
+
+     if path == '/SetCurrent':
+       return self._setGoeChargerValue('amp', value)
+     elif path == '/StartStop':
+       return self._setGoeChargerValue('alw', value)
+     elif path == '/MaxCurrent':
+       return self._setGoeChargerValue('ama', value)
+     else:
+       logging.info("mapping for evcharger path %s does not exist" % (path))
+       return False
 
 
 def main():
@@ -339,7 +339,18 @@ def main():
           '/SetCurrent': {'initial': 0, 'textformat': _a},
           '/MaxCurrent': {'initial': 0, 'textformat': _a},
           '/MCU/Temperature': {'initial': 0, 'textformat': _degC},
+          '/PCB/Temperature': {'initial': 0, 'textformat': _degC},
+          '/Handle/Temperature': {'initial': 0, 'textformat': _degC},
           '/StartStop': {'initial': 0, 'textformat': lambda p, v: (str(v))}
+          #'/History/ChargingCycles',
+          #'/History/ConnectorCycles',
+          #'/History/Ac/Energy/Forward',
+          #'/History/Uptime',
+          #'/History/ChargingTime',
+          #'/History/Alerts',
+          #'/History/AverageStartupTemperature',
+          #'/History/AbortedChargingCycles',
+          #'/History/ThermalFoldbacks'
         }
         )
 
