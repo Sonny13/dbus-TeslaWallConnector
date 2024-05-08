@@ -15,23 +15,12 @@ import sys
 import time
 import requests # for http GET
 import configparser # for config/ini file
-import dbus
 
 # our own packages from victron
 sys.path.insert(1, os.path.join(os.path.dirname(__file__), '/opt/victronenergy/dbus-systemcalc-py/ext/velib_python'))
 from vedbus import VeDbusService
 
-class SystemBus(dbus.bus.BusConnection):
-    def __new__(cls):
-        return dbus.bus.BusConnection.__new__(cls, dbus.bus.BusConnection.TYPE_SYSTEM)
 
-class SessionBus(dbus.bus.BusConnection):
-    def __new__(cls):
-        return dbus.bus.BusConnection.__new__(cls, dbus.bus.BusConnection.TYPE_SESSION)
-
-
-def dbusconnection():
-    return SessionBus() if 'DBUS_SESSION_BUS_ADDRESS' in os.environ else SystemBus()
 
 class DbusTeslaWallConnectorService:
   def __init__(self, servicename, paths, productname='Tesla WallConnector', connection='Tesla WallConnector HTTP JSON service'):
@@ -88,7 +77,7 @@ class DbusTeslaWallConnectorService:
         path, settings['initial'], gettextcallback=settings['textformat'], writeable=True, onchangecallback=self._handlechangedvalue)
 
     # add temp handler
-    self._tempservice = self.add_temp_service(100)
+    #self._tempservice = self.add_temp_service(100)
 
 
     # last update
@@ -261,8 +250,8 @@ class DbusTeslaWallConnectorService:
           self._dbusservice['/PCB/Temperature'] = d['pcba_temp_c']
           self._dbusservice['/Handle/Temperature'] = d['handle_temp_c']
 
-          self._tempservice['/CustomName'] = self._name + ' Handle'
-          self._tempservice['/Temperature'] = round(d['handle_temp_c'], 1)
+          #self._tempservice['/CustomName'] = self._name + ' Handle'
+          #self._tempservice['/Temperature'] = round(d['handle_temp_c'], 1)
 
 
           #logging
