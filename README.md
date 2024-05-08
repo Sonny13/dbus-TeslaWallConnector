@@ -41,7 +41,7 @@ Control of Tesla Wall Connector by the victron system in "Mode" "Auto" is not su
 
 
 ### Pictures
-![Victron Portal - Dashboard](img/venus-os-dashboard.PNG)
+![Victron Portal - Dashboard](img/Dashboard.PNG)
 
 ## Install & Configuration
 ### Get the code
