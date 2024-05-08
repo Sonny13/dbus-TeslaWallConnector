@@ -159,7 +159,7 @@ class DbusTeslaWallConnectorService:
 
     # check for response
     if not request_data:
-        raise ConnectionError("No response from Tesla WallConnector - %s" % (URL))
+        raise ConnectionError("No response from Tesla WallConnector - %s" % (self.VITALS))
 
     json_data = request_data.json()
 
@@ -178,7 +178,7 @@ class DbusTeslaWallConnectorService:
 
     # check for response
     if not request_data:
-        raise ConnectionError("No response from Tesla WallConnector - %s" % (URL))
+        raise ConnectionError("No response from Tesla WallConnector - %s" % (self.VITALS))
 
     json_data = request_data.json()
 
@@ -197,7 +197,7 @@ class DbusTeslaWallConnectorService:
 
     # check for response
     if not request_data:
-        raise ConnectionError("No response from Tesla WallConnector - %s" % (URL))
+        raise ConnectionError("No response from Tesla WallConnector - %s" % (self.VITALS))
 
     json_data = request_data.json()
 
@@ -275,31 +275,30 @@ class DbusTeslaWallConnectorService:
     # return true, otherwise add_timeout will be removed from GObject - see docs http://library.isr.ist.utl.pt/docs/pygtk2reference/gobject-functions.html#function-gobject--timeout-add
     return True
 
-   def _handlechangedvalue(self, path, value):
-     logging.info("someone else updated %s to %s" % (path, value))
+  def _handlechangedvalue(self, path, value):
+    logging.info("someone else updated %s to %s" % (path, value))
+    if path == '/SetCurrent':
+      return self._setGoeChargerValue('amp', value)
+    elif path == '/StartStop':
+      return self._setGoeChargerValue('alw', value)
+    elif path == '/MaxCurrent':
+      return self._setGoeChargerValue('ama', value)
+    else:
+      logging.info("mapping for evcharger path %s does not exist" % (path))
+      return False
+        
+  def getLogLevel(self):
+    config = self._getConfig()
+    logLevelString = config['DEFAULT']['LogLevel']
 
-     if path == '/SetCurrent':
-       return self._setGoeChargerValue('amp', value)
-     elif path == '/StartStop':
-       return self._setGoeChargerValue('alw', value)
-     elif path == '/MaxCurrent':
-       return self._setGoeChargerValue('ama', value)
-     else:
-       logging.info("mapping for evcharger path %s does not exist" % (path))
-       return False
-         
-   def getLogLevel():
-     config = self._getConfig()
-     logLevelString = config['DEFAULT']['LogLevel']
-  
-     if logLevelString:
-       level = logging.getLevelName(logLevelString)
-     else:
-       level = logging.INFO
+    if logLevelString:
+      level = logging.getLevelName(logLevelString)
+    else:
+      level = logging.INFO
+   
+    return level
     
-     return level
-    
-def main():
+def main(self):
   #configure logging
   config = self._getConfig()
   loglevel = int(config['DEFAULT']['LogLevel'])
