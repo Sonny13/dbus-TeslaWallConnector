@@ -30,7 +30,7 @@ What is the script doing:
   - http://ip_of_connector/api/1/wifi_status
 - Serial/MAC is taken from the response as device serial
 - Paths are added to the DBus with default value 0 - including some settings like name, etc
-- After that a "loop" is started which pulls go-eCharger data every 750ms from the REST-API and updates the values in the DBus
+- After that a "loop" is started which pulls go-teslawallconnector data every 2.5s from the REST-API and updates the values in the DBus
 
 
 
@@ -48,15 +48,15 @@ Control of Tesla Wall Connector by the victron system in "Mode" "Auto" is not su
 
 Log into your GX device via ssh and run the following scripts:
 ```
-wget https://github.com/vikt0rm/dbus-goecharger/archive/refs/heads/main.zip
-unzip main.zip "dbus-goecharger-main/*" -d /data
-mv /data/dbus-goecharger-main /data/dbus-goecharger
-chmod a+x /data/dbus-goecharger/install.sh
+wget https://github.com/Sonny13/dbus-TeslaWallConnector/archive/refs/heads/main.zip
+unzip main.zip "dbus-teslawallconnector-main/*" -d /data
+mv /data/dbus-TeslaWallConnector-main /data/dbus-teslawallconnector
+chmod a+x /data/dbus-teslawallconnector/install.sh
 rm main.zip
 ```
 
 ### Change config.ini
-Within the project there is a file `/data/dbus-goecharger/config.ini` - just change the values - most important is the deviceinstance under "DEFAULT" and host in section "ONPREMISE". More details below:
+Within the project there is a file `/data/dbus-teslawallconnector/config.ini` - just change the values - most important is the deviceinstance under "DEFAULT" and host in section "ONPREMISE". More details below:
 
 | Section  | Config vlaue | Explanation |
 | ------------- | ------------- | ------------- |
@@ -67,13 +67,13 @@ Within the project there is a file `/data/dbus-goecharger/config.ini` - just cha
 
 
 ```
-nano /data/dbus-goecharger/config.ini
+nano /data/dbus-```/config.ini
 ```
 
 ### Start the Service
 
 ```
-/data/dbus-goecharger/install.sh
+/data/dbus-teslawallconnector/install.sh
 ```
 ⚠️ Check configuration after that - because service is already installed an running and with wrong connection data (host) you will spam the log-file
 
@@ -81,7 +81,7 @@ nano /data/dbus-goecharger/config.ini
 
 ### Check if the script is running
 
-```svstat /service/dbus-opendtu``` show if the service (our script) is running. If the number of seconds shown is low, it is probably restarting and you should look into /data/dbus-opendtu/current.log.
+```svstat /service/dbus-teslawallconnector``` show if the service (our script) is running. If the number of seconds shown is low, it is probably restarting and you should look into ```cat /data/dbus-teslawallconnector/current.log```.
 
 
 
@@ -89,14 +89,14 @@ nano /data/dbus-goecharger/config.ini
 you can restart the service after a config change with
 
 ```
-/data/dbus-goecharger/restart.sh
+/data/dbus-teslawallconnector/restart.sh
 ```
 
 ### Stop / Uninstall
 you can stop the service 
 
 ```
-/data/dbus-goecharger/uninstall.sh
+/data/dbus-teslawallconnector/uninstall.sh
 ```
 
 
