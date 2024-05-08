@@ -67,7 +67,7 @@ Within the project there is a file `/data/dbus-teslawallconnector/config.ini` - 
 
 
 ```
-nano /data/dbus-```/config.ini
+nano /data/dbus-teslawallconnector/config.ini
 ```
 
 ### Start the Service
@@ -81,7 +81,8 @@ nano /data/dbus-```/config.ini
 
 ### Check if the script is running
 
-```svstat /service/dbus-teslawallconnector``` show if the service (our script) is running. If the number of seconds shown is low, it is probably restarting and you should look into ```cat /data/dbus-teslawallconnector/current.log```.
+```svstat /service/dbus-teslawallconnector``` 
+show if the service (our script) is running. If the number of seconds shown is low, it is probably restarting and you should look into ```cat /data/dbus-teslawallconnector/current.log```.
 
 
 
