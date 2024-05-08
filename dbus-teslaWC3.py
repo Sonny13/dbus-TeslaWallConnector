@@ -294,7 +294,7 @@ class DbusTeslaWallConnectorService:
   
      if logLevelString:
        level = logging.getLevelName(logLevelString)
-    else:
+     else:
        level = logging.INFO
     
      return level
