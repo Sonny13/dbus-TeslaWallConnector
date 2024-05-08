@@ -1,7 +1,8 @@
 # dbus-TeslaWallConnector
 Integrate Tesla Wall Connector into Victron Energies Venus OS
 
-# DOES NOT WORK CURRENTLY !!!!!
+# BETA Status
+There still might be some issues
 
 ## Purpose
 This repo enable visualizing data of one Tesla Wall Connector VenusOS and GX devices from Victron.
