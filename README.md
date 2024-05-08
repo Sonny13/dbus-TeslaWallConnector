@@ -75,16 +75,24 @@ nano /data/dbus-goecharger/config.ini
 ```
 /data/dbus-goecharger/install.sh
 ```
-
-### Debugging
 ⚠️ Check configuration after that - because service is already installed an running and with wrong connection data (host) you will spam the log-file
 
+## Debugging
+
+### Check if the script is running
+
+```svstat /service/dbus-opendtu``` show if the service (our script) is running. If the number of seconds shown is low, it is probably restarting and you should look into /data/dbus-opendtu/current.log.
+
+
+
+### Restart
 you can restart the service after a config change with
 
 ```
 /data/dbus-goecharger/restart.sh
 ```
 
+### Stop / Uninstall
 you can stop the service 
 
 ```
