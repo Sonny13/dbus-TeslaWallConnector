@@ -324,6 +324,7 @@ def main():
       _v = lambda p, v: (str(round(v, 1)) + 'V')
       _degC = lambda p, v: (str(v) + '°C')
       _s = lambda p, v: (str(v) + 's')
+      _percent = lambda p, v: (str(round(v, 1)) + '%')
 
       #start our main-service
       pvac_output = DbusTeslaWallConnectorService(
@@ -335,6 +336,8 @@ def main():
           '/Ac/L3/Power': {'initial': 0, 'textformat': _w},
           '/Ac/Energy/Forward': {'initial': 0, 'textformat': _kwh},
           '/ChargingTime': {'initial': 0, 'textformat': _s},
+          '/Ac/Frequency':{'initial': 0, 'textformat': _percent},
+
 
           '/Ac/Voltage': {'initial': 0, 'textformat': _v},
           '/Current': {'initial': 0, 'textformat': _a},
