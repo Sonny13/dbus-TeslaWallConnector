@@ -1,7 +1,7 @@
 # dbus-TeslaWallConnector
 Integrate Tesla Wall Connector into Victron Energies Venus OS
 
-# Status
+## Status
 Reading data from Tesla Wall Connector works.
 Writing data to Tesla Wall Connector is currently not possible due to a missing API. Use the car api with node red contrib instead if you need to change the values.
 
@@ -46,7 +46,7 @@ Control of Tesla Wall Connector by the victron system in "Mode" "Auto" is not su
 ### Pictures
 ![Victron Portal - Dashboard](img/Dashboard.png)
 
-## Install & Configuration
+# Install & Configuration
 ### Get the code
 
 
