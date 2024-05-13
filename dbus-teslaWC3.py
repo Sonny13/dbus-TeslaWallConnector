@@ -234,8 +234,8 @@ class DbusTeslaWallConnectorService:
           self._dbusservice['/Current'] = round(d['vehicle_current_a'], 1)
           self._dbusservice['/SetCurrent'] = 13  # static for now
           self._dbusservice['/MaxCurrent'] = 13  # d['vehicle_current_a']
-          # self._dbusservice['/Ac/Energy/Forward'] = float(d['session_energy_wh']) / 1000.0
-          self._dbusservice['/Ac/Energy/Forward'] = round(float(lt['energy_wh']) / 1000.0, 3)
+          self._dbusservice['/Ac/Energy/Forward'] = float(d['session_energy_wh']) / 1000.0
+          # self._dbusservice['/Ac/Energy/Forward'] = round(float(lt['energy_wh']) / 1000.0, 3)
           self._dbusservice['/ChargingTime'] = d['session_s']
 
           state = 0 # disconnected
